@@ -4,6 +4,7 @@ import dbConnect from "./../../utils/dbConnect";
 import errorHandler from "./../../middlewares/errorHandler";
 import AppError from "./../../models/AppError";
 import * as bcrypt from "bcrypt";
+import sendEmail from "./../../utils/sendEmail";
 
 export const createUser: RequestHandler = async (req, res) => {
   // get the data from the request body
@@ -33,6 +34,13 @@ export const createUser: RequestHandler = async (req, res) => {
 
     // save the user to the database
     await usersCollection.insertOne(user);
+
+    // send a welcome email
+    await sendEmail(
+      email,
+      "Welcome to the Tailor Shop",
+      "Welcome to the Tailor Shop"
+    );
 
     // return 201 and the user object
     res.status(201).json({ user });
