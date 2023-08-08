@@ -1,6 +1,7 @@
 import express, { json } from "express";
 import userRouter from "./routes/user";
 import authRouter from "./routes/auth";
+import checkAuth from "./middlewares/checkAuth";
 
 const app = express();
 
@@ -8,7 +9,12 @@ const app = express();
 app.use(json());
 
 // routes
+
+// public routes
 app.use("/auth", authRouter);
+
+// protected routes
+app.use(checkAuth);
 app.use("/user", userRouter);
 
 app.get("/", (req, res) => {
