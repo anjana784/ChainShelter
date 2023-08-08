@@ -3,6 +3,7 @@ import User from "../../models/User";
 import dbConnect from "./../../utils/dbConnect";
 import errorHandler from "./../../middlewares/errorHandler";
 import AppError from "./../../models/AppError";
+import * as bcrypt from "bcrypt";
 
 export const createUser: RequestHandler = async (req, res) => {
   // get the data from the request body
@@ -25,12 +26,15 @@ export const createUser: RequestHandler = async (req, res) => {
       res
     );
   } else {
+    // hash the password
+    const hashedPassword = await bcrypt.hash(password, 12);
     // create a new user
-    const user = new User(name, email, mobile, password, role);
+    const user = new User(name, email, mobile, hashedPassword, role);
 
     // save the user to the database
     await usersCollection.insertOne(user);
 
+    // return 201 and the user object
     res.status(201).json({ user });
   }
 };
