@@ -11,7 +11,7 @@ export const createUser: RequestHandler = async (req, res) => {
   const { name, email, mobile, password, role } = req.body;
 
   // get the users collection
-  const { usersCollection } = await dbConnect();
+  const { client, usersCollection } = await dbConnect();
 
   // check if the user already exists
   const existingUser = await usersCollection.findOne({ email });
@@ -35,6 +35,9 @@ export const createUser: RequestHandler = async (req, res) => {
     // save the user to the database
     await usersCollection.insertOne(user);
 
+    // close the connection to the database
+    client.close();
+
     // send a welcome email
     await sendEmail(
       email,
@@ -45,4 +48,18 @@ export const createUser: RequestHandler = async (req, res) => {
     // return 201 and the user object
     res.status(201).json({ user });
   }
+};
+
+export const getUsers: RequestHandler = async (req, res) => {
+  // get the users collection
+  const { client, usersCollection } = await dbConnect();
+
+  // get all the users
+  const users = await usersCollection.find().toArray();
+
+  // close the connection to the database
+  client.close();
+
+  // return 200 and the users array
+  res.status(200).json({ users });
 };

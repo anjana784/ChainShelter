@@ -19,7 +19,7 @@ const dbConnect = async () => {
   const usersCollection = database.collection("users");
 
   // return the users collection
-  return { usersCollection };
+  return { client, usersCollection };
 };
 
 export default dbConnect;

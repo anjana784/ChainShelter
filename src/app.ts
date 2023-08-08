@@ -1,5 +1,6 @@
 import express, { json } from "express";
 import userRouter from "./routes/user";
+import authRouter from "./routes/auth";
 
 const app = express();
 
@@ -7,6 +8,7 @@ const app = express();
 app.use(json());
 
 // routes
+app.use("/auth", authRouter);
 app.use("/user", userRouter);
 
 app.get("/", (req, res) => {
