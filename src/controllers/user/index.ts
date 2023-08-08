@@ -1,5 +1,5 @@
 import type { RequestHandler } from "express";
-import User from "../../models/User";
+import User from "./../../models/User";
 import dbConnect from "./../../utils/dbConnect";
 import errorHandler from "./../../middlewares/errorHandler";
 import AppError from "./../../models/AppError";
