@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import AppError from "../../models/appError";
+import AppError from "./../../models/appError";
 
 const errorHandler = (error: AppError, req: Request, res: Response) => {
   // log the error

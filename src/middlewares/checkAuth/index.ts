@@ -1,7 +1,7 @@
 import * as jwt from "jsonwebtoken";
 import type { RequestHandler } from "express";
 import errorHandler from "./../../middlewares/errorHandler";
-import AppError from "../../models/appError";
+import AppError from "./../../models/appError";
 
 const checkAuth: RequestHandler = (req, res, next) => {
   // get the token from the request header
