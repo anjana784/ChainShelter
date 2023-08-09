@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
-import AppError from "../../models/AppError";
+import AppError from "../../models/appError";
 
-const handleErrors = (error: AppError, req: Request, res: Response) => {
+const errorHandler = (error: AppError, req: Request, res: Response) => {
   // log the error
   console.log(error);
 
@@ -11,4 +11,4 @@ const handleErrors = (error: AppError, req: Request, res: Response) => {
   });
 };
 
-export default handleErrors;
+export default errorHandler;

@@ -1,8 +1,8 @@
 import type { RequestHandler } from "express";
-import User from "./../../models/User";
+import User from "../../models/user";
 import dbConnect from "./../../utils/dbConnect";
 import errorHandler from "./../../middlewares/errorHandler";
-import AppError from "./../../models/AppError";
+import AppError from "../../models/appError";
 import * as bcrypt from "bcrypt";
 import sendEmail from "./../../utils/sendEmail";
 

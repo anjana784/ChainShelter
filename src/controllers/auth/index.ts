@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
 import dbConnect from "./../../utils/dbConnect";
 import errorHandler from "./../../middlewares/errorHandler";
-import AppError from "./../../models/AppError";
+import AppError from "../../models/appError";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 

@@ -1,7 +1,7 @@
 import { validationResult } from "express-validator";
 import type { RequestHandler } from "express";
 import handleErrors from "../errorHandler";
-import AppError from "../../models/AppError";
+import AppError from "../../models/appError";
 
 const validateRequestSchema: RequestHandler = (req, res, next) => {
   // get the validation result from the Request object
