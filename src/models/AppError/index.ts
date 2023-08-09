@@ -1,5 +1,3 @@
-import { AppErrorType } from "utils/types";
-
 class AppError extends Error {
   constructor(
     public statusCode: number,
