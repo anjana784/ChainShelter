@@ -60,6 +60,7 @@ export const login: RequestHandler = async (req, res) => {
       res.status(200).json({
         status: "success",
         data: {
+          message: "Login successful",
           user: {
             name: user.name,
             email: user.email,
