@@ -16,7 +16,7 @@ export const login: RequestHandler = async (req, res) => {
   const user = await usersCollection.findOne({ email });
 
   // close the connection to the database
-  client.close();
+  await client.close();
 
   // if the user does not exist, return an error
   if (!user) {
