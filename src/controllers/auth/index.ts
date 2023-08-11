@@ -1,7 +1,6 @@
 import type { RequestHandler } from "express";
 import dbConnect from "./../../utils/dbConnect";
 import errorHandler from "./../../middlewares/errorHandler";
-import AppError from "./../../models/appError";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 
@@ -21,10 +20,11 @@ export const login: RequestHandler = async (req, res) => {
   // if the user does not exist, return an error
   if (!user) {
     errorHandler(
-      new AppError(400, {
+      {
+        statusCode: 400,
         type: "Bad Request",
-        message: "incorrect email or password",
-      }),
+        message: "user does not exist",
+      },
       req,
       res
     );
@@ -38,10 +38,11 @@ export const login: RequestHandler = async (req, res) => {
     // if the passwords do not match, return an error
     if (!isPasswordCorrect) {
       errorHandler(
-        new AppError(400, {
+        {
+          statusCode: 400,
           type: "Bad Request",
           message: "incorrect email or password",
-        }),
+        },
         req,
         res
       );

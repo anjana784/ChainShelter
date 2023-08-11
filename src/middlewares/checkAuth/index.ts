@@ -1,7 +1,6 @@
 import * as jwt from "jsonwebtoken";
 import type { RequestHandler } from "express";
 import errorHandler from "./../../middlewares/errorHandler";
-import AppError from "./../../models/appError";
 
 const checkAuth: RequestHandler = (req, res, next) => {
   // get the token from the request header
@@ -10,10 +9,11 @@ const checkAuth: RequestHandler = (req, res, next) => {
   // if the token is not present, return an error
   if (!token) {
     errorHandler(
-      new AppError(401, {
+      {
+        statusCode: 401,
         type: "Unauthorized",
         message: "You are not authorized to access this resource",
-      }),
+      },
       req,
       res
     );
@@ -23,10 +23,11 @@ const checkAuth: RequestHandler = (req, res, next) => {
       // if there is an error, return an error
       if (err) {
         errorHandler(
-          new AppError(401, {
+          {
+            statusCode: 401,
             type: "Unauthorized",
             message: "You are not authorized to access this resource",
-          }),
+          },
           req,
           res
         );
