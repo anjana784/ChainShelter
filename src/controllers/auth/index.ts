@@ -32,6 +32,8 @@ export const login: RequestHandler = async (req, res) => {
     // get the hashed password
     const hashedPassword = user.password;
 
+    console.log(user);
+
     // compare the passwords
     const isPasswordCorrect = await bcrypt.compare(password, hashedPassword);
 
@@ -55,7 +57,18 @@ export const login: RequestHandler = async (req, res) => {
       );
 
       // return 200 and the token
-      res.status(200).json({ token });
+      res.status(200).json({
+        status: "success",
+        data: {
+          user: {
+            name: user.name,
+            email: user.email,
+            mobile: user.mobile,
+            role: user.role,
+          },
+          token,
+        },
+      });
     }
   }
 };

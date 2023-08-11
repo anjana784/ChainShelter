@@ -7,9 +7,11 @@ const errorHandler = (error: appErrorType, req: Request, res: Response) => {
 
   // return 500 and the error message
   res.status(error.statusCode).json({
-    status: "Error",
-    type: error.type,
-    message: error.message,
+    status: "error",
+    data: {
+      type: error.type,
+      message: error.message,
+    },
   });
 };
 
