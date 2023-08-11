@@ -2,11 +2,13 @@ import express, { json } from "express";
 import userRouter from "./routes/user";
 import authRouter from "./routes/auth";
 import checkAuth from "./middlewares/checkAuth";
+import cors from "cors";
 
 const app = express();
 
 // global middleware
 app.use(json());
+app.use(cors());
 
 // routes
 
