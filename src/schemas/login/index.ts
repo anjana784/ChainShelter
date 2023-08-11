@@ -3,10 +3,10 @@ import { body } from "express-validator";
 const loginSchema = [
   body("email")
     .notEmpty()
-    .withMessage("email cannot be empty")
+    .withMessage("Email cannot be empty")
     .isEmail()
-    .withMessage("invalid email address"),
-  body("password").notEmpty().withMessage("password cannot be empty"),
+    .withMessage("Invalid email address"),
+  body("password").notEmpty().withMessage("Password cannot be empty"),
 ];
 
 export default loginSchema;

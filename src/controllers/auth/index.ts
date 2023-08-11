@@ -23,7 +23,7 @@ export const login: RequestHandler = async (req, res) => {
       {
         statusCode: 400,
         type: "Bad Request",
-        message: "user does not exist",
+        message: "User does not exist",
       },
       req,
       res
@@ -43,7 +43,7 @@ export const login: RequestHandler = async (req, res) => {
         {
           statusCode: 400,
           type: "Bad Request",
-          message: "incorrect email or password",
+          message: "Incorrect email or password",
         },
         req,
         res
