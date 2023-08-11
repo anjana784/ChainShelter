@@ -12,13 +12,12 @@ app.use(json());
 
 // public routes
 app.use("/auth", authRouter);
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
 
 // protected routes
 app.use(checkAuth);
 app.use("/user", userRouter);
-
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
 
 export default app;
