@@ -3,7 +3,91 @@ import dbConnect from "./../../utils/dbConnect";
 import errorHandler from "./../../middlewares/errorHandler";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
+import sendEmail from "./../../utils/sendEmail";
 
+// Register a new user
+export const register: RequestHandler = async (req, res) => {
+  // get the username, email and password from the request body
+  const { username, email, password } = req.body;
+
+  // get the users collection
+  const { client, usersCollection } = await dbConnect();
+
+  // check if the user exists
+  const user = await usersCollection.findOne({ email });
+
+  // check if the user exists
+  if (user) {
+    // if the user exists,
+
+    // close the connection to the database
+    await client.close();
+
+    // return an error
+    errorHandler(
+      {
+        statusCode: 400,
+        type: "Bad Request",
+        message: "User already exists",
+      },
+      req,
+      res
+    );
+  } else {
+    // if the user does not exist,
+
+    // hash the password
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    // create a new user
+    const newUser = {
+      username,
+      email,
+      password: hashedPassword,
+    };
+
+    // insert the new user into the database
+    const result = await usersCollection.insertOne(newUser);
+
+    // close the connection to the database
+    await client.close();
+
+    // create a token
+    const token = jwt.sign(
+      { id: result.insertedId, role: "user" },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN }
+    );
+
+    // set the token in the cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production" ? true : false,
+    });
+
+    // return 201 and user
+    res.status(201).json({
+      status: "success",
+      data: {
+        message: "User registered successfully",
+        user: {
+          id: result.insertedId,
+          username,
+          email,
+        },
+      },
+    });
+
+    // send a welcome email
+    await sendEmail(
+      email,
+      "Welcome to the Tailor Shop",
+      "<h1>Welcome to the Tailor Shop</h1>"
+    );
+  }
+};
+
+// Login a user
 export const login: RequestHandler = async (req, res) => {
   // get the email and password from the request body
   const { email, password } = req.body;
@@ -17,8 +101,9 @@ export const login: RequestHandler = async (req, res) => {
   // close the connection to the database
   await client.close();
 
-  // if the user does not exist, return an error
+  // check if the user exists
   if (!user) {
+    // if the user does not exist, return an error
     errorHandler(
       {
         statusCode: 400,
@@ -29,6 +114,8 @@ export const login: RequestHandler = async (req, res) => {
       res
     );
   } else {
+    // if the user exists, check if the password is correct
+
     // get the hashed password
     const hashedPassword = user.password;
 
@@ -37,8 +124,9 @@ export const login: RequestHandler = async (req, res) => {
     // compare the passwords
     const isPasswordCorrect = await bcrypt.compare(password, hashedPassword);
 
-    // if the passwords do not match, return an error
+    // check if the password is correct
     if (!isPasswordCorrect) {
+      // if the passwords do not match, return an error
       errorHandler(
         {
           statusCode: 400,
@@ -49,12 +137,18 @@ export const login: RequestHandler = async (req, res) => {
         res
       );
     } else {
-      // else, create a token
+      // if the passwords match, create a token
       const token = jwt.sign(
         { id: user._id, role: user.role },
         process.env.JWT_SECRET,
         { expiresIn: process.env.JWT_EXPIRES_IN }
       );
+
+      // set the token in the cookie
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production" ? true : false,
+      });
 
       // return 200 and the token
       res.status(200).json({
@@ -62,14 +156,25 @@ export const login: RequestHandler = async (req, res) => {
         data: {
           message: "Login successful",
           user: {
+            id: user._id,
             name: user.name,
             email: user.email,
             mobile: user.mobile,
             role: user.role,
           },
-          token,
         },
       });
     }
   }
+};
+
+// Logout a us
+export const logout: RequestHandler = async (req, res) => {
+  // return 200 and the token
+  res.status(200).json({
+    status: "success",
+    data: {
+      message: "Logout successful",
+    },
+  });
 };

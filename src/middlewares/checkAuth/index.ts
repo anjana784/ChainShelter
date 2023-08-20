@@ -3,39 +3,46 @@ import type { RequestHandler } from "express";
 import errorHandler from "./../../middlewares/errorHandler";
 
 const checkAuth: RequestHandler = (req, res, next) => {
-  // get the token from the request header
-  const token = req.headers.authorization?.split(" ")[1];
+  // get the token from the cookies
+  const token = req.cookies.token;
 
-  // if the token is not present, return an error
+  // check if the token is present
   if (!token) {
+    // if the token is not present, return an error
     errorHandler(
       {
         statusCode: 401,
         type: "Unauthorized",
-        message: "You are not authorized to access this resource",
+        message: "You are not logged in",
       },
       req,
       res
     );
   } else {
-    // else, verify the token
-    jwt.verify(token, process.env.JWT_SECRET!, (err, decoded) => {
-      // if there is an error, return an error
-      if (err) {
-        errorHandler(
-          {
-            statusCode: 401,
-            type: "Unauthorized",
-            message: "You are not authorized to access this resource",
-          },
-          req,
-          res
-        );
-      } else {
-        // else, proceed to the next middleware
-        next();
-      }
-    });
+    // if the token is present, verify it
+
+    // decode the token
+    const decodedToken = jwt.decode(token);
+
+    // check if the token is valid
+    if (!decodedToken) {
+      // if the token is not valid, return an error
+      errorHandler(
+        {
+          statusCode: 401,
+          type: "Unauthorized",
+          message: "You are not logged in",
+        },
+        req,
+        res
+      );
+    } else {
+      // if the token is valid, set the user id in the request
+      // req.userId = decodedToken.id;
+
+      // call the next middleware
+      next();
+    }
   }
 };
 
