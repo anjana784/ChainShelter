@@ -5,8 +5,16 @@ import errorHandler from "./../../middlewares/errorHandler";
 import * as bcrypt from "bcrypt";
 import sendEmail from "./../../utils/sendEmail";
 
-//Get Current logged in user
+/**
+ * @controller POST /api/getUser
+ * @access Private
+ * @description Get a user
+ */
 export const getUser: RequestHandler = async (req, res) => {};
 
-//Edit Current logged in user
+/**
+ * @controller POST /api/editUser
+ * @access Private
+ * @description Edit a user
+ */
 export const editUser: RequestHandler = async (req, res) => {};

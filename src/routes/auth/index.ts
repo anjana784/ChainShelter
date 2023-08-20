@@ -6,6 +6,10 @@ import userSchema from "./../../schemas/user";
 
 const authRouter = Router();
 
+/**
+ * @route POST /api/auth/login
+ * @route POST /api/auth/register
+ */
 authRouter
   .post("/login", loginSchema, validateRequestSchema, login)
   .post("/register", userSchema, validateRequestSchema, register);

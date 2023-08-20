@@ -5,7 +5,11 @@ import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import sendEmail from "./../../utils/sendEmail";
 
-// Register a new user
+/**
+ * @controller POST /api/register
+ * @access Public
+ * @description Register a user
+ */
 export const register: RequestHandler = async (req, res) => {
   // get the username, email and password from the request body
   const { username, email, password } = req.body;
@@ -87,7 +91,11 @@ export const register: RequestHandler = async (req, res) => {
   }
 };
 
-// Login a user
+/**
+ * @controller POST /api/login
+ * @access Public
+ * @description Login a user
+ */
 export const login: RequestHandler = async (req, res) => {
   // get the email and password from the request body
   const { email, password } = req.body;
@@ -166,15 +174,4 @@ export const login: RequestHandler = async (req, res) => {
       });
     }
   }
-};
-
-// Logout a us
-export const logout: RequestHandler = async (req, res) => {
-  // return 200 and the token
-  res.status(200).json({
-    status: "success",
-    data: {
-      message: "Logout successful",
-    },
-  });
 };
