@@ -1,11 +1,14 @@
 import express, { json } from "express";
-import userRouter from "./routes/user";
-import authRouter from "./routes/auth";
 import checkAuth from "./middlewares/checkAuth";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import resetPasswordRouter from "./routes/resetPassword";
-import forgotPasswordRouter from "./routes/forgotPassword";
+import {
+  authRouter,
+  forgotPasswordRouter,
+  keyRouter,
+  resetPasswordRouter,
+  userRouter,
+} from "./routes";
 
 const app = express();
 
@@ -32,5 +35,6 @@ app.use("/forgotPassword", forgotPasswordRouter);
 // app.use(checkAuth);
 app.use("/user", userRouter);
 app.use("/resetPassword", resetPasswordRouter);
+app.use("/key", keyRouter);
 
 export default app;
