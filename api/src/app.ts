@@ -12,27 +12,18 @@ import {
 
 const app = express();
 
-/**
- * @global_middlewares
- */
+// global middlewares
 app.use(json());
 app.use(cors());
 app.use(cookieParser());
 
-/**
- * @routes
- */
+// routes
 
-/**
- * @public_routes
- */
+// public routes
 app.use("/auth", authRouter);
 app.use("/forgotPassword", forgotPasswordRouter);
 
-/**
- * @protected_routes
- */
-// app.use(checkAuth);
+// private routes
 app.use("/user", userRouter);
 app.use("/resetPassword", resetPasswordRouter);
 app.use("/key", keyRouter);
